@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ForexDesk — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="dash-layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">📈</div>
+      <div class="brand">
+        <strong>ForexDesk</strong>
+        <small>ACCOUNT MANAGER</small>
+      </div>
+    </div>
+
+    <div class="sidebar-section">Main Menu</div>
+
+    <a class="nav-link active" data-section="overview" href="#">
+      <span class="nav-icon">🏠</span> Overview
+    </a>
+    <a class="nav-link" data-section="portfolio" href="#">
+      <span class="nav-icon">💼</span> Client Portfolio
+    </a>
+    <a class="nav-link" data-section="deposits" href="#">
+      <span class="nav-icon">💳</span> Deposits
+    </a>
+    <a class="nav-link" data-section="accounts" href="#">
+      <span class="nav-icon">📊</span> Active Accounts
+    </a>
+    <a class="nav-link" data-section="followups" href="#">
+      <span class="nav-icon">🔔</span> Follow-ups
+      <span style="margin-left:auto;background:#ef4444;color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;">4</span>
+    </a>
+
+    <div class="sidebar-section" style="margin-top:12px;">Settings</div>
+    <a class="nav-link" href="#">
+      <span class="nav-icon">⚙️</span> Preferences
+    </a>
+
+    <div class="sidebar-bottom">
+      <button class="logout-btn" id="logoutBtn">
+        <span style="font-size:17px;">🚪</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main ───────────────────────────────────────────────────────── -->
+  <div class="main-area">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2 id="pageTitle">Overview</h2>
+        <p id="pageDate"></p>
+      </div>
+      <div class="topbar-right">
+        <div class="notif-btn" title="Notifications">
+          🔔
+          <span class="notif-dot"></span>
+        </div>
+        <div class="user-chip">
+          <div class="avatar" id="userAvatar">AM</div>
+          <div>
+            <div class="user-name" id="userName">Account Manager</div>
+            <div class="user-role">Account Manager</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- ══ Overview section ══════════════════════════════════════════ -->
+      <section class="content-section active" id="section-overview">
+
+        <!-- Stat cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Total Clients</span>
+              <span class="stat-icon icon-blue">👥</span>
+            </div>
+            <div class="stat-value">148</div>
+            <div class="stat-trend trend-up">▲ 6 new this month</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Recent Deposits</span>
+              <span class="stat-icon icon-green">💰</span>
+            </div>
+            <div class="stat-value">$284K</div>
+            <div class="stat-trend trend-up">▲ 12% vs last month</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Active Accounts</span>
+              <span class="stat-icon icon-amber">📊</span>
+            </div>
+            <div class="stat-value">93</div>
+            <div class="stat-trend trend-down">▼ 3 inactive this week</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Pending Follow-ups</span>
+              <span class="stat-icon icon-red">🔔</span>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-trend trend-down" style="color:var(--red);">2 overdue</div>
+          </div>
+        </div>
+
+        <!-- Widgets -->
+        <div class="widgets-grid">
+
+          <!-- Recent Deposits -->
+          <div class="widget">
+            <div class="widget-header">
+              <span class="widget-title">Recent Deposits</span>
+              <span class="widget-badge badge-green">Today</span>
+            </div>
+            <div class="widget-body">
+              <div class="deposit-item">
+                <div class="deposit-avatar" style="background:#6366f1;">MR</div>
+                <div class="deposit-info">
+                  <div class="deposit-name">Marco Rossi</div>
+                  <div class="deposit-pair">EUR/USD · MT5 #10042</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="deposit-amount">+$25,000</div>
+                  <div class="deposit-time">09:14 AM</div>
+                </div>
+              </div>
+              <div class="deposit-item">
+                <div class="deposit-avatar" style="background:#0891b2;">SC</div>
+                <div class="deposit-info">
+                  <div class="deposit-name">Sara Chen</div>
+                  <div class="deposit-pair">GBP/JPY · MT5 #10089</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="deposit-amount">+$10,500</div>
+                  <div class="deposit-time">10:02 AM</div>
+                </div>
+              </div>
+              <div class="deposit-item">
+                <div class="deposit-avatar" style="background:#059669;">AM</div>
+                <div class="deposit-info">
+                  <div class="deposit-name">Ahmed Malik</div>
+                  <div class="deposit-pair">XAU/USD · MT5 #10031</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="deposit-amount">+$50,000</div>
+                  <div class="deposit-time">11:45 AM</div>
+                </div>
+              </div>
+              <div class="deposit-item">
+                <div class="deposit-avatar" style="background:#dc2626;">LP</div>
+                <div class="deposit-info">
+                  <div class="deposit-name">Lena Petrova</div>
+                  <div class="deposit-pair">USD/CAD · MT5 #10055</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="deposit-amount">+$8,000</div>
+                  <div class="deposit-time">01:30 PM</div>
+                </div>
+              </div>
+              <div class="deposit-item">
+                <div class="deposit-avatar" style="background:#d97706;">JK</div>
+                <div class="deposit-info">
+                  <div class="deposit-name">James Kato</div>
+                  <div class="deposit-pair">BTC/USD · MT5 #10078</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="deposit-amount">+$15,000</div>
+                  <div class="deposit-time">02:55 PM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Follow-ups -->
+          <div class="widget">
+            <div class="widget-header">
+              <span class="widget-title">Pending Follow-ups</span>
+              <span class="widget-badge badge-amber">4 pending</span>
+            </div>
+            <div class="widget-body">
+              <div class="followup-item">
+                <div class="followup-dot dot-red"></div>
+                <div>
+                  <div class="followup-name">Marco Rossi</div>
+                  <div class="followup-note">Discuss leverage increase request</div>
+                </div>
+                <div class="followup-due due-overdue">2 days overdue</div>
+              </div>
+              <div class="followup-item">
+                <div class="followup-dot dot-red"></div>
+                <div>
+                  <div class="followup-name">Lena Petrova</div>
+                  <div class="followup-note">KYC document re-submission</div>
+                </div>
+                <div class="followup-due due-overdue">Yesterday</div>
+              </div>
+              <div class="followup-item">
+                <div class="followup-dot dot-amber"></div>
+                <div>
+                  <div class="followup-name">Sara Chen</div>
+                  <div class="followup-note">Review trading performance report</div>
+                </div>
+                <div class="followup-due due-today">Today</div>
+              </div>
+              <div class="followup-item">
+                <div class="followup-dot dot-blue"></div>
+                <div>
+                  <div class="followup-name">James Kato</div>
+                  <div class="followup-note">Onboarding call — VIP account</div>
+                </div>
+                <div class="followup-due due-soon">Tomorrow</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Accounts -->
+          <div class="widget" style="grid-column: 1 / -1;">
+            <div class="widget-header">
+              <span class="widget-title">Active Accounts</span>
+              <span class="widget-badge badge-blue">93 active</span>
+            </div>
+            <div class="widget-body">
+              <table class="acc-table">
+                <thead>
+                  <tr>
+                    <th>Client</th>
+                    <th>Account</th>
+                    <th>Balance</th>
+                    <th>Open P&L</th>
+                    <th>Leverage</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Marco Rossi</strong></td>
+                    <td>MT5 #10042</td>
+                    <td>$125,000</td>
+                    <td class="pnl-pos">+$3,210</td>
+                    <td>1:100</td>
+                    <td><span class="status-pill pill-green">● Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Sara Chen</strong></td>
+                    <td>MT5 #10089</td>
+                    <td>$48,500</td>
+                    <td class="pnl-neg">-$920</td>
+                    <td>1:50</td>
+                    <td><span class="status-pill pill-green">● Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ahmed Malik</strong></td>
+                    <td>MT5 #10031</td>
+                    <td>$210,000</td>
+                    <td class="pnl-pos">+$12,450</td>
+                    <td>1:200</td>
+                    <td><span class="status-pill pill-green">● Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Lena Petrova</strong></td>
+                    <td>MT5 #10055</td>
+                    <td>$32,000</td>
+                    <td class="pnl-neg">-$150</td>
+                    <td>1:30</td>
+                    <td><span class="status-pill pill-amber">⏸ Review</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>James Kato</strong></td>
+                    <td>MT5 #10078</td>
+                    <td>$95,000</td>
+                    <td class="pnl-pos">+$5,800</td>
+                    <td>1:100</td>
+                    <td><span class="status-pill pill-green">● Active</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══ Client Portfolio section ══════════════════════════════════ -->
+      <section class="content-section" id="section-portfolio">
+        <div class="stats-grid" style="grid-template-columns: repeat(3,1fr);">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Total Clients</span><span class="stat-icon icon-blue">👥</span></div>
+            <div class="stat-value">148</div>
+            <div class="stat-trend trend-up">▲ 6 new this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">VIP Clients</span><span class="stat-icon icon-amber">⭐</span></div>
+            <div class="stat-value">18</div>
+            <div class="stat-trend trend-up">▲ 2 upgraded</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">At-Risk Clients</span><span class="stat-icon icon-red">⚠️</span></div>
+            <div class="stat-value">7</div>
+            <div class="stat-trend trend-down" style="color:var(--red);">Need attention</div>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-title">Client Portfolio</span>
+            <span class="widget-badge badge-blue">148 clients</span>
+          </div>
+          <table class="acc-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Country</th><th>Total Deposits</th><th>Joined</th><th>Tier</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Marco Rossi</strong></td><td>m.rossi@email.com</td><td>🇮🇹 Italy</td><td>$125,000</td><td>Jan 2023</td><td><span class="status-pill pill-amber">VIP</span></td></tr>
+              <tr><td><strong>Sara Chen</strong></td><td>s.chen@email.com</td><td>🇨🇳 China</td><td>$48,500</td><td>Mar 2023</td><td><span class="status-pill pill-green">Standard</span></td></tr>
+              <tr><td><strong>Ahmed Malik</strong></td><td>a.malik@email.com</td><td>🇦🇪 UAE</td><td>$210,000</td><td>Nov 2022</td><td><span class="status-pill pill-amber">VIP</span></td></tr>
+              <tr><td><strong>Lena Petrova</strong></td><td>l.petrova@email.com</td><td>🇷🇺 Russia</td><td>$32,000</td><td>Jun 2023</td><td><span class="status-pill pill-green">Standard</span></td></tr>
+              <tr><td><strong>James Kato</strong></td><td>j.kato@email.com</td><td>🇯🇵 Japan</td><td>$95,000</td><td>Feb 2023</td><td><span class="status-pill pill-amber">VIP</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ══ Deposits section ══════════════════════════════════════════ -->
+      <section class="content-section" id="section-deposits">
+        <div class="stats-grid" style="grid-template-columns: repeat(3,1fr);">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">This Month</span><span class="stat-icon icon-green">💰</span></div>
+            <div class="stat-value">$284K</div>
+            <div class="stat-trend trend-up">▲ 12% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Transactions</span><span class="stat-icon icon-blue">🔁</span></div>
+            <div class="stat-value">37</div>
+            <div class="stat-trend trend-up">▲ 5 more than last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Avg Deposit</span><span class="stat-icon icon-amber">📈</span></div>
+            <div class="stat-value">$7.7K</div>
+            <div class="stat-trend trend-up">▲ Up from $6.2K</div>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-title">Deposit History</span>
+            <span class="widget-badge badge-green">April 2025</span>
+          </div>
+          <table class="acc-table">
+            <thead>
+              <tr><th>Client</th><th>Account</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Ahmed Malik</strong></td><td>MT5 #10031</td><td class="pnl-pos">$50,000</td><td>Wire Transfer</td><td>Apr 7, 11:45</td><td><span class="status-pill pill-green">Cleared</span></td></tr>
+              <tr><td><strong>Marco Rossi</strong></td><td>MT5 #10042</td><td class="pnl-pos">$25,000</td><td>Credit Card</td><td>Apr 7, 09:14</td><td><span class="status-pill pill-green">Cleared</span></td></tr>
+              <tr><td><strong>James Kato</strong></td><td>MT5 #10078</td><td class="pnl-pos">$15,000</td><td>Crypto</td><td>Apr 7, 14:55</td><td><span class="status-pill pill-green">Cleared</span></td></tr>
+              <tr><td><strong>Sara Chen</strong></td><td>MT5 #10089</td><td class="pnl-pos">$10,500</td><td>Bank Transfer</td><td>Apr 7, 10:02</td><td><span class="status-pill pill-green">Cleared</span></td></tr>
+              <tr><td><strong>Lena Petrova</strong></td><td>MT5 #10055</td><td class="pnl-pos">$8,000</td><td>Credit Card</td><td>Apr 7, 13:30</td><td><span class="status-pill pill-amber">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ══ Active Accounts section ═══════════════════════════════════ -->
+      <section class="content-section" id="section-accounts">
+        <div class="stats-grid" style="grid-template-columns: repeat(3,1fr);">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Active Accounts</span><span class="stat-icon icon-green">📊</span></div>
+            <div class="stat-value">93</div>
+            <div class="stat-trend trend-up">▲ of 148 total</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Total AUM</span><span class="stat-icon icon-blue">💼</span></div>
+            <div class="stat-value">$4.2M</div>
+            <div class="stat-trend trend-up">▲ 8% this quarter</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Total Open P&L</span><span class="stat-icon icon-amber">📈</span></div>
+            <div class="stat-value">+$21K</div>
+            <div class="stat-trend trend-up trend-up">Clients in profit</div>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-title">Active Trading Accounts</span>
+            <span class="widget-badge badge-blue">Live</span>
+          </div>
+          <table class="acc-table">
+            <thead>
+              <tr><th>Client</th><th>Account</th><th>Balance</th><th>Open P&L</th><th>Leverage</th><th>Last Trade</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Ahmed Malik</strong></td><td>MT5 #10031</td><td>$210,000</td><td class="pnl-pos">+$12,450</td><td>1:200</td><td>2 hrs ago</td><td><span class="status-pill pill-green">● Active</span></td></tr>
+              <tr><td><strong>Marco Rossi</strong></td><td>MT5 #10042</td><td>$125,000</td><td class="pnl-pos">+$3,210</td><td>1:100</td><td>4 hrs ago</td><td><span class="status-pill pill-green">● Active</span></td></tr>
+              <tr><td><strong>James Kato</strong></td><td>MT5 #10078</td><td>$95,000</td><td class="pnl-pos">+$5,800</td><td>1:100</td><td>1 hr ago</td><td><span class="status-pill pill-green">● Active</span></td></tr>
+              <tr><td><strong>Sara Chen</strong></td><td>MT5 #10089</td><td>$48,500</td><td class="pnl-neg">-$920</td><td>1:50</td><td>3 hrs ago</td><td><span class="status-pill pill-green">● Active</span></td></tr>
+              <tr><td><strong>Lena Petrova</strong></td><td>MT5 #10055</td><td>$32,000</td><td class="pnl-neg">-$150</td><td>1:30</td><td>2 days ago</td><td><span class="status-pill pill-amber">⏸ Review</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ══ Follow-ups section ═════════════════════════════════════════ -->
+      <section class="content-section" id="section-followups">
+        <div class="stats-grid" style="grid-template-columns: repeat(3,1fr);">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Overdue</span><span class="stat-icon icon-red">⚠️</span></div>
+            <div class="stat-value">2</div>
+            <div class="stat-trend" style="color:var(--red);">Immediate action needed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Due Today</span><span class="stat-icon icon-amber">📅</span></div>
+            <div class="stat-value">1</div>
+            <div class="stat-trend" style="color:var(--amber);">Don't miss it</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-label">Upcoming</span><span class="stat-icon icon-blue">🔔</span></div>
+            <div class="stat-value">1</div>
+            <div class="stat-trend trend-up">This week</div>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-header">
+            <span class="widget-title">All Follow-ups</span>
+            <span class="widget-badge badge-amber">4 pending</span>
+          </div>
+          <table class="acc-table">
+            <thead>
+              <tr><th>Client</th><th>Task</th><th>Priority</th><th>Due</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Marco Rossi</strong></td>
+                <td>Discuss leverage increase request</td>
+                <td><span class="status-pill pill-amber">High</span></td>
+                <td class="pnl-neg">Apr 5 (overdue)</td>
+                <td><span class="status-pill" style="background:#fee2e2;color:#991b1b;">Overdue</span></td>
+              </tr>
+              <tr>
+                <td><strong>Lena Petrova</strong></td>
+                <td>KYC document re-submission</td>
+                <td><span class="status-pill pill-amber">High</span></td>
+                <td class="pnl-neg">Apr 6 (overdue)</td>
+                <td><span class="status-pill" style="background:#fee2e2;color:#991b1b;">Overdue</span></td>
+              </tr>
+              <tr>
+                <td><strong>Sara Chen</strong></td>
+                <td>Review trading performance report</td>
+                <td><span class="status-pill pill-green">Medium</span></td>
+                <td>Apr 7 (today)</td>
+                <td><span class="status-pill pill-amber">Pending</span></td>
+              </tr>
+              <tr>
+                <td><strong>James Kato</strong></td>
+                <td>Onboarding call — VIP account upgrade</td>
+                <td><span class="status-pill pill-green">Medium</span></td>
+                <td>Apr 8</td>
+                <td><span class="status-pill pill-blue" style="background:#dbeafe;color:#1e40af;">Scheduled</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  // ── Auth guard ──────────────────────────────────────────────────────
+  const raw = sessionStorage.getItem('fxd_user');
+  if (!raw) { window.location.href = 'index.html'; }
+
+  const user = JSON.parse(raw);
+  document.getElementById('userName').textContent = user.name;
+  document.getElementById('userAvatar').textContent =
+    user.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
+  // ── Date ────────────────────────────────────────────────────────────
+  const now = new Date();
+  document.getElementById('pageDate').textContent =
+    now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // ── Navigation ──────────────────────────────────────────────────────
+  const links    = document.querySelectorAll('.nav-link[data-section]');
+  const sections = document.querySelectorAll('.content-section');
+  const titleEl  = document.getElementById('pageTitle');
+
+  const labels = {
+    overview:  'Overview',
+    portfolio: 'Client Portfolio',
+    deposits:  'Deposits',
+    accounts:  'Active Accounts',
+    followups: 'Follow-ups',
+  };
+
+  links.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = link.dataset.section;
+
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      sections.forEach(s => s.classList.remove('active'));
+      document.getElementById('section-' + target).classList.add('active');
+
+      titleEl.textContent = labels[target] || target;
+    });
+  });
+
+  // ── Logout ──────────────────────────────────────────────────────────
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    sessionStorage.removeItem('fxd_user');
+    window.location.href = 'index.html';
+  });
+</script>
+
+</body>
+</html>
