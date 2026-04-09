@@ -398,6 +398,20 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+  will-change: transform;
+}
+
+/* MD3 hover elevation: level 1 → level 2 with state layer tint */
+.stat-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,.13);
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+
+body.dark-mode .stat-card:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,.45);
+  border-color: transparent;
 }
 
 .stat-card-header {
