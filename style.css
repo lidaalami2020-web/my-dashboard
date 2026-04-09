@@ -138,6 +138,24 @@ body {
 
 .btn-primary:hover { background: var(--accent-h); }
 
+/* MD3 tonal button — secondary container */
+.btn-tonal {
+  background: #e8f0fd;
+  color: var(--accent);
+  border: none;
+  margin-top: 8px;
+}
+.btn-tonal:hover { background: #d2e3fc; }
+
+/* MD3 outlined button — transparent with border */
+.btn-outlined {
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  margin-top: 8px;
+}
+.btn-outlined:hover { background: rgba(26,115,232,.06); }
+
 .auth-footer {
   text-align: center;
   margin-top: 22px;
@@ -268,6 +286,12 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Sub-page main content (accounts, deposits, etc.) */
+.main-content {
+  margin-left: var(--sidebar-w);
   min-height: 100vh;
 }
 
@@ -726,6 +750,20 @@ body.dark-mode textarea:focus {
   outline: none;
 }
 
+/* MD3 button variants in dark mode */
+body.dark-mode .btn-tonal {
+  background: #1e3a5f;
+  color: #60a5fa;
+}
+body.dark-mode .btn-tonal:hover { background: #2a4a70; }
+
+body.dark-mode .btn-outlined {
+  background: transparent;
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+body.dark-mode .btn-outlined:hover { background: rgba(96,165,250,.08); }
+
 /* ── Theme toggle button only ── */
 body.dark-mode #theme-toggle {
   background: var(--surface);
@@ -752,8 +790,93 @@ body.dark-mode ::-webkit-scrollbar-track { background: var(--bg); }
 body.dark-mode ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 body.dark-mode ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-/* ── Responsive ── */
+/* ── Responsive ─────────────────────────────────────────── */
+
+/* Tablet: shrink sidebar and content padding */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 200px; }
+  .topbar { padding: 0 20px; }
+  .content { padding: 20px; }
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+}
+
+/* Mobile: sidebar collapses to a horizontal scrollable strip */
 @media (max-width: 768px) {
+  /* Sidebar layout */
+  .sidebar {
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar-logo {
+    padding: 10px 14px;
+    border-bottom: none;
+    border-right: 1px solid rgba(255,255,255,.08);
+    flex-shrink: 0;
+  }
+
+  /* Hide non-essential sidebar elements */
+  .sidebar-logo .brand small,
+  .sidebar-section,
+  .sidebar-bottom { display: none; }
+
+  .nav-link {
+    padding: 10px 14px;
+    margin: 6px 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Remove sidebar offset on main areas */
+  .main-area,
+  .main-content { margin-left: 0; }
+
+  /* Sidebar on sub-pages (BEM structure) */
+  .sidebar__logo { padding: 10px 14px; font-weight: 700; }
+  .sidebar__nav ul { display: flex; flex-wrap: nowrap; }
+  .sidebar__nav a  { white-space: nowrap; padding: 10px 14px; }
+
+  /* Topbar */
+  .topbar { height: 56px; padding: 0 16px; }
+  .topbar-right { gap: 8px; }
+  .topbar-left h2 { font-size: 16px; }
+
+  /* Hide low-priority topbar items */
+  .topbar-left p,
+  .topbar-date,
+  .user-chip .user-role { display: none; }
+  .user-chip { padding: 4px 8px 4px 4px; }
+
+  /* Content */
+  .content { padding: 14px; }
+
+  /* Stats grid */
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .stat-card { padding: 16px; }
+  .stat-value { font-size: 22px; }
+
+  /* Widgets */
+  .widgets-grid { gap: 12px; }
+
+  /* Table overflow scroll */
+  .widget { overflow: visible; }
+  .widget-body { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .acc-table { min-width: 520px; }
+
+  /* Auth pages */
+  .auth-card { padding: 32px 20px; margin: 16px; }
+  .auth-card h1 { font-size: 20px; }
+
+  /* Dark mode sidebar strip */
   body.dark-mode .sidebar {
     border-right: none;
     border-bottom: 1px solid var(--border);
