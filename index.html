@@ -41,16 +41,21 @@
   </div>
 
   <script>
+    const API = 'http://localhost:3001/api';
+
     // If already logged in, go straight to dashboard
     if (sessionStorage.getItem('fxd_user')) {
       window.location.href = 'dashboard.html';
     }
 
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const errEl    = document.getElementById('loginError');
+      const btn      = this.querySelector('button[type="submit"]');
+
+      errEl.style.display = 'none';
 
       if (!email || !password) {
         errEl.textContent = 'Please enter your email and password.';
@@ -58,10 +63,32 @@
         return;
       }
 
-      // Simulate auth — accept any credentials
-      const name = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-      sessionStorage.setItem('fxd_user', JSON.stringify({ name, email }));
-      window.location.href = 'dashboard.html';
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+
+      try {
+        const res  = await fetch(`${API}/auth/login`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Invalid email or password. Please try again.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        sessionStorage.setItem('fxd_user', JSON.stringify({ id: data.id, name: data.name, email: data.email, role: data.role }));
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        errEl.textContent = 'Could not reach the server. Please try again.';
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
     });
   </script>
 </body>

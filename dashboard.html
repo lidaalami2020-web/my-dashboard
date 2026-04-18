@@ -9,6 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css" />
+<script>
+  // ── Early auth guard — runs before body renders ─────────────────────
+  (function () {
+    try {
+      const raw = sessionStorage.getItem('fxd_user');
+      if (!raw || !JSON.parse(raw)) {
+        window.location.replace('index.html');
+      }
+    } catch (e) {
+      window.location.replace('index.html');
+    }
+  })();
+</script>
 </head>
          
 <body>
@@ -67,6 +80,7 @@
       </div>
       <div class="topbar-right">
 <button id="theme-toggle">Dark Mode</button>
+        <button class="topbar-logout-btn" id="topbarLogoutBtn" title="Sign Out">🚪 Sign Out</button>
         <div class="notif-btn" title="Notifications">
           🔔
           <span class="notif-dot"></span>
@@ -308,37 +322,27 @@
         <div class="stats-grid" style="grid-template-columns: repeat(3,1fr);">
           <div class="stat-card">
             <div class="stat-card-header"><span class="stat-label">Total Clients</span><span class="stat-icon icon-blue">👥</span></div>
-            <div class="stat-value">148</div>
-            <div class="stat-trend trend-up">▲ 6 new this month</div>
+            <div class="stat-value" id="statTotalClients">—</div>
+            <div class="stat-trend">Live from database</div>
           </div>
           <div class="stat-card">
-            <div class="stat-card-header"><span class="stat-label">VIP Clients</span><span class="stat-icon icon-amber">⭐</span></div>
-            <div class="stat-value">18</div>
-            <div class="stat-trend trend-up">▲ 2 upgraded</div>
+            <div class="stat-card-header"><span class="stat-label">Active Clients</span><span class="stat-icon icon-green">✅</span></div>
+            <div class="stat-value" id="statActiveClients">—</div>
+            <div class="stat-trend trend-up">Status: active</div>
           </div>
           <div class="stat-card">
-            <div class="stat-card-header"><span class="stat-label">At-Risk Clients</span><span class="stat-icon icon-red">⚠️</span></div>
-            <div class="stat-value">7</div>
-            <div class="stat-trend trend-down" style="color:var(--red);">Need attention</div>
+            <div class="stat-card-header"><span class="stat-label">Total Balance</span><span class="stat-icon icon-amber">💰</span></div>
+            <div class="stat-value" id="statTotalBalance">—</div>
+            <div class="stat-trend trend-up">All clients combined</div>
           </div>
         </div>
         <div class="widget">
           <div class="widget-header">
             <span class="widget-title">Client Portfolio</span>
-            <span class="widget-badge badge-blue">148 clients</span>
+            <button class="btn-add" id="addClientBtn">+ Add Client</button>
           </div>
-          <table class="acc-table">
-            <thead>
-              <tr><th>Name</th><th>Email</th><th>Country</th><th>Total Deposits</th><th>Joined</th><th>Tier</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>Marco Rossi</strong></td><td>m.rossi@email.com</td><td>🇮🇹 Italy</td><td>$125,000</td><td>Jan 2023</td><td><span class="status-pill pill-amber">VIP</span></td></tr>
-              <tr><td><strong>Sara Chen</strong></td><td>s.chen@email.com</td><td>🇨🇳 China</td><td>$48,500</td><td>Mar 2023</td><td><span class="status-pill pill-green">Standard</span></td></tr>
-              <tr><td><strong>Ahmed Malik</strong></td><td>a.malik@email.com</td><td>🇦🇪 UAE</td><td>$210,000</td><td>Nov 2022</td><td><span class="status-pill pill-amber">VIP</span></td></tr>
-              <tr><td><strong>Lena Petrova</strong></td><td>l.petrova@email.com</td><td>🇷🇺 Russia</td><td>$32,000</td><td>Jun 2023</td><td><span class="status-pill pill-green">Standard</span></td></tr>
-              <tr><td><strong>James Kato</strong></td><td>j.kato@email.com</td><td>🇯🇵 Japan</td><td>$95,000</td><td>Feb 2023</td><td><span class="status-pill pill-amber">VIP</span></td></tr>
-            </tbody>
-          </table>
+          <div id="clientsState"></div>
+          <div id="clientsTableWrap" style="overflow-x:auto;"></div>
         </div>
       </section>
 
@@ -486,15 +490,55 @@
   </div>
 </div>
 
-<script>
-  // ── Auth guard ──────────────────────────────────────────────────────
-  const raw = sessionStorage.getItem('fxd_user');
-  if (!raw) { window.location.href = 'index.html'; }
+<!-- ── Client Modal ─────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="clientModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">Add Client</h3>
+      <button class="modal-close" id="modalClose">&#x2715;</button>
+    </div>
+    <div class="error-msg" id="modalError"></div>
+    <form id="clientForm" novalidate>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="cf-name" placeholder="John Smith" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="cf-email" placeholder="client@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Account Number</label>
+        <input type="text" id="cf-account" placeholder="ACC-001" />
+      </div>
+      <div class="form-group">
+        <label>Balance (USD)</label>
+        <input type="number" id="cf-balance" placeholder="0" min="0" step="0.01" />
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="cf-status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="suspended">Suspended</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outlined" id="modalCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="modalSubmit">Save Client</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-  const user = JSON.parse(raw);
+<script>
+  // ── Populate user info ──────────────────────────────────────────────
+  const user = JSON.parse(sessionStorage.getItem('fxd_user'));
   document.getElementById('userName').textContent = user.name;
   document.getElementById('userAvatar').textContent =
     user.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  document.querySelector('.user-role').textContent =
+    user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User';
 
   // ── Date ────────────────────────────────────────────────────────────
   const now = new Date();
@@ -530,10 +574,14 @@
   });
 
   // ── Logout ──────────────────────────────────────────────────────────
-  document.getElementById('logoutBtn').addEventListener('click', () => {
+  function logout() {
+    if (!confirm('Are you sure you want to sign out?')) return;
     sessionStorage.removeItem('fxd_user');
-    window.location.href = 'index.html';
-  });
+    window.location.replace('index.html');
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', logout);
+  document.getElementById('topbarLogoutBtn').addEventListener('click', logout);
 </script>
 
 <script>
@@ -558,5 +606,195 @@ localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 </script>
 </div>
+
+<script>
+  // ── Clients CRUD ────────────────────────────────────────────────────
+  const API = 'http://localhost:3001/api';
+  let editingId = null;
+
+  // Render stats from client list
+  function updateStats(clients) {
+    document.getElementById('statTotalClients').textContent = clients.length;
+    document.getElementById('statActiveClients').textContent =
+      clients.filter(c => c.status === 'active').length;
+    const total = clients.reduce((sum, c) => sum + (c.balance || 0), 0);
+    document.getElementById('statTotalBalance').textContent =
+      '$' + total.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+
+  // Render table
+  function renderTable(clients) {
+    const wrap = document.getElementById('clientsTableWrap');
+    const state = document.getElementById('clientsState');
+    state.innerHTML = '';
+
+    if (!clients.length) {
+      wrap.innerHTML = '';
+      state.innerHTML = '<div class="empty-state">No clients yet. Click <strong>+ Add Client</strong> to get started.</div>';
+      return;
+    }
+
+    wrap.innerHTML = `
+      <table class="acc-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>Email</th><th>Account #</th>
+            <th>Balance</th><th>Status</th><th>Created</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${clients.map(c => `
+            <tr data-id="${c.id}">
+              <td>${c.id}</td>
+              <td><strong>${esc(c.name)}</strong></td>
+              <td>${esc(c.email)}</td>
+              <td>${esc(c.account_number)}</td>
+              <td>$${Number(c.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+              <td><span class="status-pill ${statusPill(c.status)}">${esc(c.status)}</span></td>
+              <td>${new Date(c.created_at).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' })}</td>
+              <td>
+                <button class="tbl-btn tbl-edit" data-id="${c.id}">Edit</button>
+                <button class="tbl-btn tbl-delete" data-id="${c.id}">Delete</button>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>`;
+
+    wrap.querySelectorAll('.tbl-edit').forEach(btn =>
+      btn.addEventListener('click', () => openEdit(clients.find(c => c.id === +btn.dataset.id))));
+    wrap.querySelectorAll('.tbl-delete').forEach(btn =>
+      btn.addEventListener('click', () => handleDelete(+btn.dataset.id)));
+  }
+
+  function esc(str) {
+    return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function statusPill(s) {
+    return s === 'active' ? 'pill-green' : s === 'inactive' ? 'pill-amber' : 'pill-red';
+  }
+
+  // Load clients
+  async function loadClients() {
+    const state = document.getElementById('clientsState');
+    const wrap  = document.getElementById('clientsTableWrap');
+    state.innerHTML = '<div class="loading-state">Loading clients…</div>';
+    wrap.innerHTML  = '';
+    try {
+      const res     = await fetch(`${API}/clients`);
+      const clients = await res.json();
+      if (!res.ok) throw new Error(clients.error || 'Failed to load clients');
+      updateStats(clients);
+      renderTable(clients);
+    } catch (err) {
+      state.innerHTML = `<div class="api-error">Failed to load clients: ${esc(err.message)}</div>`;
+    }
+  }
+
+  // Modal helpers
+  const modal    = document.getElementById('clientModal');
+  const modalErr = document.getElementById('modalError');
+
+  function openModal(title) {
+    document.getElementById('modalTitle').textContent = title;
+    modalErr.style.display = 'none';
+    modalErr.textContent   = '';
+    modal.classList.add('active');
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    document.getElementById('clientForm').reset();
+    editingId = null;
+  }
+
+  function openAdd() {
+    editingId = null;
+    document.getElementById('cf-name').value    = '';
+    document.getElementById('cf-email').value   = '';
+    document.getElementById('cf-account').value = '';
+    document.getElementById('cf-balance').value = '';
+    document.getElementById('cf-status').value  = 'active';
+    openModal('Add Client');
+  }
+
+  function openEdit(client) {
+    editingId = client.id;
+    document.getElementById('cf-name').value    = client.name;
+    document.getElementById('cf-email').value   = client.email;
+    document.getElementById('cf-account').value = client.account_number;
+    document.getElementById('cf-balance').value = client.balance;
+    document.getElementById('cf-status').value  = client.status;
+    openModal('Edit Client');
+  }
+
+  // Form submit — create or update
+  document.getElementById('clientForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn  = document.getElementById('modalSubmit');
+    const name          = document.getElementById('cf-name').value.trim();
+    const email         = document.getElementById('cf-email').value.trim();
+    const account_number = document.getElementById('cf-account').value.trim();
+    const balance       = parseFloat(document.getElementById('cf-balance').value) || 0;
+    const status        = document.getElementById('cf-status').value;
+
+    if (!name || !email || !account_number) {
+      modalErr.textContent   = 'Name, email, and account number are required.';
+      modalErr.style.display = 'block';
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = 'Saving…';
+    modalErr.style.display = 'none';
+
+    const url    = editingId ? `${API}/clients/${editingId}` : `${API}/clients`;
+    const method = editingId ? 'PUT' : 'POST';
+
+    try {
+      const res  = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, account_number, balance, status }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed');
+      closeModal();
+      loadClients();
+    } catch (err) {
+      modalErr.textContent   = err.message;
+      modalErr.style.display = 'block';
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = 'Save Client';
+    }
+  });
+
+  // Delete
+  async function handleDelete(id) {
+    if (!confirm('Delete this client? This action cannot be undone.')) return;
+    try {
+      const res  = await fetch(`${API}/clients/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Delete failed');
+      loadClients();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  }
+
+  // Wire up buttons
+  document.getElementById('addClientBtn').addEventListener('click', openAdd);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  // Auto-load when portfolio section is opened
+  document.querySelectorAll('.nav-link[data-section]').forEach(link => {
+    link.addEventListener('click', () => {
+      if (link.dataset.section === 'portfolio') loadClients();
+    });
+  });
+</script>
 </body>
 </html>

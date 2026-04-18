@@ -804,6 +804,160 @@ body.dark-mode ::-webkit-scrollbar-track { background: var(--bg); }
 body.dark-mode ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 body.dark-mode ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
+/* ── Topbar logout button ───────────────────────────────────────────── */
+.topbar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.topbar-logout-btn:hover {
+  background: #fef2f2;
+  color: var(--red);
+  border-color: #fecaca;
+}
+body.dark-mode .topbar-logout-btn:hover {
+  background: #3d1515;
+  color: #fca5a5;
+  border-color: #7f1d1d;
+}
+
+/* ── Client table action buttons ───────────────────────────────────── */
+.btn-add {
+  padding: 7px 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-add:hover { background: var(--accent-h); }
+
+.tbl-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background .15s;
+}
+.tbl-edit   { background: #dbeafe; color: #1e40af; margin-right: 6px; }
+.tbl-edit:hover { background: #bfdbfe; }
+.tbl-delete { background: #fee2e2; color: #991b1b; }
+.tbl-delete:hover { background: #fecaca; }
+
+body.dark-mode .tbl-edit   { background: #1e3a5f; color: #60a5fa; }
+body.dark-mode .tbl-delete { background: #3d1515; color: #fca5a5; }
+
+.pill-red { background: #fee2e2; color: #991b1b; }
+body.dark-mode .pill-red { background: #3d1515; color: #fca5a5; }
+
+/* ── Modal ──────────────────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+  background: var(--surface);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  padding: 32px 28px 24px;
+  margin: 16px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.modal-title { font-size: 18px; font-weight: 700; }
+
+.modal-close {
+  width: 30px; height: 30px;
+  border: none;
+  background: var(--bg);
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
+
+.modal-box .form-group input,
+.modal-box select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--text);
+  background: #f8fafc;
+  outline: none;
+  transition: border-color .2s;
+}
+.modal-box .form-group input:focus,
+.modal-box select:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.modal-actions .btn { width: auto; flex: 1; margin-top: 0; }
+
+body.dark-mode .modal-box { background: var(--surface); }
+body.dark-mode .modal-box .form-group input,
+body.dark-mode .modal-box select {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+body.dark-mode .modal-box .form-group input:focus,
+body.dark-mode .modal-box select:focus {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+/* ── Loading / empty / error states ───────────────────────────────── */
+.loading-state,
+.empty-state,
+.api-error {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+}
+.loading-state { color: var(--muted); }
+.empty-state   { color: var(--muted); }
+.api-error     { color: var(--red); background: #fef2f2; border-radius: 8px; margin: 16px; }
+
 /* ── Responsive ─────────────────────────────────────────── */
 
 /* Tablet: shrink sidebar and content padding */

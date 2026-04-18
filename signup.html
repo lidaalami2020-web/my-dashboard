@@ -45,12 +45,17 @@
   </div>
 
   <script>
-    document.getElementById('signupForm').addEventListener('submit', function (e) {
+    const API = 'http://localhost:3001/api';
+
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const name     = document.getElementById('name').value.trim();
       const email    = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const errEl    = document.getElementById('signupError');
+      const btn      = this.querySelector('button[type="submit"]');
+
+      errEl.style.display = 'none';
 
       if (!name || !email || !password) {
         errEl.textContent = 'Please fill in all fields.';
@@ -64,9 +69,32 @@
         return;
       }
 
-      // Simulate registration
-      sessionStorage.setItem('fxd_user', JSON.stringify({ name, email }));
-      window.location.href = 'dashboard.html';
+      btn.disabled = true;
+      btn.textContent = 'Creating account…';
+
+      try {
+        const res  = await fetch(`${API}/auth/register`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ name, email, password, role: 'user' }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Registration failed. Please try again.';
+          errEl.style.display = 'block';
+          return;
+        }
+
+        sessionStorage.setItem('fxd_user', JSON.stringify({ id: data.id, name: data.name, email: data.email, role: data.role }));
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        errEl.textContent = 'Could not reach the server. Please try again.';
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
     });
   </script>
 </body>
